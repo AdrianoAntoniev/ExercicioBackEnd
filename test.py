@@ -8,30 +8,29 @@ handler.connect()
 handler.create_table()
 
 def inserindo_contato(cpf, nome, ativo, valor_total):
-	cliente = Customer(cpf, nome, ativo, valor_total)
-	handler.insert(cliente)
-
-	#handler.insert_all([michel, dilma])
-
-def busca_todos():	
-	return  handler.select_all()
-
-def busca_valor_maior_que_560_entre_1500_e_2700():
-	return handler.select_larger_than_and_id_in(560.00, (15, 27))
+	cliente = Customer(cpf, nome, ativo, valor_total)	
+	handler.insert(cliente)	
 
 def busca_valor_maior_que_560_entre_1500_e_2700_com_media():
-	return handler.select_name_and_value_total_and_count(560.00, (15, 27))
+	return handler.get_total_sum_and_customers_based_in(560.00, (1500, 2700))
 
 
+nomes = ['Joao', 'Augusto', 'Maria', 'Pedro', 'Radames', 
+		 'Severino', 'Arnold', 'Joana', 'Camila', 'Angelica',
+		 'Andre', 'Jeniffer', 'Paola', 'Otavio', 'Tarcisio']
 
-alfabeto1 = list(string.ascii_lowercase[:])
-alfabeto2 = list(string.ascii_uppercase[:])
-numeros = list(range(1, 27))
+nomes_do_meio = ['Rodrigues', 'Souza', 'Ferreira', 'Lopes', 'Benevides',
+				 'Schneider', 'Buarque', 'Smith', 'Sato', 'Abdalla',
+				 'Vieira', 'Knitell', 'Bach', 'Cobain', 'Pereira']
 
-for i in range(1, 401):
-	x,y,z = randint(1,25), randint(1,25), randint(1,25)
+nome_final = ['dos Santos', 'da Silva', 'von Neumann', 'de Alencar', 'de Paiva',
+			  'da Villa', 'Nunes', 'Facchini', 'Bhaskara', 'Lennon',
+			  'Zuckerberg', 'Stradivarius', 'Klinsmann', 'McDonald', 'Kong']				
 
-	nome = "Senhor {}{}{}".format(alfabeto1[x], alfabeto2[y], numeros[z])	
+for i in range(1, 3001):
+	x,y,z = randint(0,14), randint(0,14), randint(0,14)
+
+	nome = "Cliente {} {} {}".format(nomes[x], nomes_do_meio[y], nome_final[z])		
 	valor = (randint(100, 99999)) / 100.00
 	rg = randint(11111111111, 99999999999)
 	ativo = randint(0,1)

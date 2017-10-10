@@ -15,10 +15,12 @@ handler.insert_all([michel, dilma])
 
 print("Verificando se o programa deu certo...\nSelecionando toda a corja:")
 
-resps = handler.select_all()
-for resp in resps:
-	print(resp)
+def printing():
+	resps = handler.select_all()
+	for resp in resps:
+		print(resp)
 
+printing()
 print("Agora selecionando o numero 1 da lista:")
 print(handler.select_by_id(1))
 
@@ -26,7 +28,13 @@ print(handler.select_by_id(1))
 print("Agora selecionando nossa querida dilminha...")
 print(handler.select_by_name('Dilma Rousseff'))
 
+print("Agora deletando o Michel Temer.")
+handler.delete_id(2)
+printing()
 
+print("Deletando Paulo Maluf.")
+handler.delete_name('Paulo Maluf')
+printing()
 
 
 

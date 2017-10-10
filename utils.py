@@ -13,10 +13,12 @@ class DBHandler:
 	def create_table(self):
 		## VERIFICAR SE EXISTE UM COMANDO con.isOpen()... if self.con.		
 		cursor = self.con.cursor()
+		sql = 'drop table if exists {}'.format(self.table_name)
+		cursor.execute(sql)
 		sql = 'create table if not exists {}(id_customer integer primary key autoincrement, '\
 											   'cpf_cnpj number(18,0), '\
 											   'nm_customer varchar(40), '\
-											   'is_ative number(1,0), '\
+											   'is_active number(1,0), '\
 											   'vl_total number(10,2))'.format(self.table_name) 
 					
 		cursor.execute(sql)
@@ -54,16 +56,36 @@ class DBHandler:
 	def select_all(self):		
 		sql = 'select * from {}'.format(self.table_name)		
 		return self._fetch(sql)
-	
+
+	# interval shoud be a tuple!	
+	def select_larger_than_and_id_in(self, value, interval):		
+		inner_sql = 'select * from {} where vl_total > {}'.format(self.table_name, value)
+
+		sql = 'select * from ({}) where id_customer > {} and id_customer < {}'.format(inner_sql, interval[0], interval[1])
+		print(sql)
+		return self._fetch(sql)
+
+
+	def select_name_and_value_total_and_count(self, value, interval):		
+		inner_inner_sql = 'select * from {} where vl_total > {}'.format(self.table_name, value)				
+		inner_sql = 'select * from ({}) where id_customer > {} and id_customer < {} order by vl_total desc'.format(inner_inner_sql, interval[0], interval[1])
+
+		filtered_customers = self._fetch(inner_sql)
+		
+		sql = "select (sum(vl_total) / count(*)) from ({})".format(inner_sql)		
+		media = self._fetch(sql)				 
+		
+		return {'customers': filtered_customers, 'media': media}
+
+
 	## this function should be used in order to eliminate duplicate code.	
 	## python does not provide access modifiers =/
 	def _fetch(self, sql, delete=False):
 		cursor = self.con.cursor()
 		cursor.execute(sql)
 		
-		if not delete:
-			data = cursor.fetchall()
-			return data
+		if not delete:			
+			return cursor.fetchall()			
 		return True
 
 	def delete_id(self, id):

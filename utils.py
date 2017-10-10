@@ -15,9 +15,13 @@ class Connector:
 
 		sql = sql[:len(sql)-2]
 		sql += ")"
-
-		print(sql)
-
+		
 		self.cursor.execute(sql)			
+
+	def insert(self, fields):		
+		sql = 'insert into cliente values (?,?)'		
+		self.cursor.execute(sql, fields)
+
+
 
 

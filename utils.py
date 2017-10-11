@@ -3,16 +3,15 @@ import sqlite3
 
 class DBHandler:
 	def __init__(self):		
-		self.database = 'processo_valemobi.db'
+		self.database = 'CUSTOMERS.db'
 		self.table_name = 'tb_customer_account'
-		self.con = None					
+		self.connection = None					
 
 	def connect(self):
-		self.con = sqlite3.connect(self.database)
+		self.connection = sqlite3.connect(self.database)
 
-	def create_table(self):
-		## VERIFICAR SE EXISTE UM COMANDO con.isOpen()... if self.con.		
-		cursor = self.con.cursor()
+	def create_table(self):		
+		cursor = self.connection.cursor()
 		sql = 'drop table if exists {}'.format(self.table_name)
 		cursor.execute(sql)
 		sql = 'create table if not exists {}(id_customer integer primary key autoincrement, '\
@@ -24,14 +23,14 @@ class DBHandler:
 		cursor.execute(sql)		
 
 	def insert(self, customer):
-		cursor = self.con.cursor()
+		cursor = self.connection.cursor()
 		sql = 'insert into {} values (null, ?, ?, ?, ?)'.format(self.table_name)		
 
 		values = (customer.get_cpf_cnpj(), customer.get_nm_customer(), 
 			customer.get_is_active(), customer.get_vl_total())
 
 		cursor.execute(sql, values)
-		self.con.commit()
+		self.connection.commit()
 
 
 	def insert_all(self, customers):
@@ -53,11 +52,10 @@ class DBHandler:
 	## this function should be used in order to eliminate duplicate code.	
 	## python does not provide access modifiers =/ 	
 	def _fetch(self, sql):
-		cursor = self.con.cursor()
+		cursor = self.connection.cursor()
 		cursor.execute(sql)			
 		return cursor.fetchall()			
 
 
-
 	def close_connection(self):
-		self.conn.close()
+		self.connection.close()

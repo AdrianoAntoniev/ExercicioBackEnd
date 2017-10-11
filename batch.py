@@ -50,7 +50,7 @@ for customer in dict_customers_and_media['customers']:
 print('______________________________________________________________________________________________________________')
 print("Media geral de saldo dos clientes com ID entre 1500 e 2700: %10.2f" % dict_customers_and_media['media'][0])
 
-
+handler.close_connection()
 
 
 
